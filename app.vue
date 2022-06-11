@@ -3,8 +3,7 @@ import {names} from './names.js';
 
 const selectedNames = ref();
 
-
-const generator = reactive({gender: '', popularity: '', length: 'All'});
+const generator = reactive({gender: 'Unisex', popularity: 'Trendy', length: 'All'});
 
 const selectOption = (evt, optionType) => {
   if (evt.target.nodeName === 'BUTTON') {
@@ -17,8 +16,8 @@ const selectOption = (evt, optionType) => {
 };
 
 const selectNames = () => selectedNames.value = names
-    .filter(item => generator.gender === '' ? item : item.gender === generator.gender)
-    .filter(item => generator.popularity === '' ? item : item.popularity === generator.popularity)
+    .filter(item => item.gender === generator.gender)
+    .filter(item => item.popularity === generator.popularity)
     .filter(item => generator.length === 'All' ? item : item.length === generator.length)
     .map(item => item.name);
 </script>
@@ -37,7 +36,7 @@ const selectNames = () => selectedNames.value = names
             Boy
           </button>
           <button
-              class="option"
+              class="option option-active"
           >
             Unisex
           </button>
@@ -52,7 +51,7 @@ const selectNames = () => selectedNames.value = names
         <h4>2) Choose the name's popularity</h4>
         <div class="option-buttons" @click="selectOption($event, 'popularity')">
           <button
-              class="option option-left"
+              class="option option-left option-active"
           >
             Trendy
           </button>
@@ -72,7 +71,7 @@ const selectNames = () => selectedNames.value = names
             Long
           </button>
           <button
-              class="option"
+              class="option option-active"
           >
             All
           </button>
@@ -85,7 +84,12 @@ const selectNames = () => selectedNames.value = names
       </div>
       <button class="primary" @click="selectNames">Find Names</button>
     </div>
-    {{ selectedNames }}
+    <div class="cards-container">
+      <div v-for="name in selectedNames" :key="name" class="card">
+        <h4>{{ name }}</h4>
+        <p>x</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -151,5 +155,26 @@ h1 {
   margin: 1rem auto;
   cursor: pointer;
 }
-
+.cards-container {
+  display: flex;
+  margin: 3rem auto;
+  flex-wrap: wrap;
+}
+.card {
+  background-color: rgb(27, 60, 138);
+  width: 28%;
+  color: white;
+  border-radius: 1rem;
+  padding: 0.1rem;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.card p {
+  position: absolute;
+  top: -20%;
+  left: 92.5%;
+  cursor: pointer;
+  color: white;
+}
 </style>
