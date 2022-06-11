@@ -1,5 +1,9 @@
 <script setup>
-const selectBtn = evt => {
+
+const generator = reactive({gender: undefined, popularity: undefined, length: undefined});
+
+const selectOption = (evt, optionType) => {
+  generator[optionType] = evt.target.innerText;
   const parent = evt.target.parentNode;
   const buttons = parent.querySelectorAll('button');
   Array.from(buttons, btn => btn.classList.remove('option-active'));
@@ -14,7 +18,7 @@ const selectBtn = evt => {
     <div class="options-container">
       <div class="option-container">
         <h4>1) Choose a gender</h4>
-        <div class="option-buttons" @click="selectBtn($event)">
+        <div class="option-buttons" @click="selectOption($event, 'gender')">
           <button
               class="option option-left"
           >
@@ -34,7 +38,7 @@ const selectBtn = evt => {
       </div>
       <div class="option-container">
         <h4>2) Choose the name's popularity</h4>
-        <div class="option-buttons" @click="selectBtn($event)" >
+        <div class="option-buttons" @click="selectOption($event, 'popularity')" >
           <button
               class="option option-left"
           >
@@ -49,7 +53,7 @@ const selectBtn = evt => {
       </div>
       <div class="option-container">
         <h4>3) Choose name's length</h4>
-        <div class="option-buttons" @click="selectBtn($event)">
+        <div class="option-buttons" @click="selectOption($event, 'length')">
           <button
               class="option option-left"
           >
