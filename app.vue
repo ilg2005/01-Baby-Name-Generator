@@ -1,14 +1,24 @@
 <script setup>
+import {names} from './names.js';
 
-const generator = reactive({gender: undefined, popularity: undefined, length: undefined});
+const selectedNames = ref();
+
+
+const generator = reactive({gender: '', popularity: '', length: 'All'});
 
 const selectOption = (evt, optionType) => {
   generator[optionType] = evt.target.innerText;
   const parent = evt.target.parentNode;
-  const buttons = parent.querySelectorAll('button');
-  Array.from(buttons, btn => btn.classList.remove('option-active'));
+  const options = parent.querySelectorAll('.option');
+  Array.from(options, option => option.classList.remove('option-active'));
   evt.target.classList.add('option-active');
 };
+
+const selectNames = () => selectedNames.value = names
+    .filter(item => generator.gender === '' ? item : item.gender === generator.gender)
+    .filter(item => generator.popularity === '' ? item : item.popularity === generator.popularity)
+    .filter(item => generator.length === 'All' ? item : item.length === generator.length)
+    .map(item => item.name);
 </script>
 
 <template>
@@ -71,7 +81,9 @@ const selectOption = (evt, optionType) => {
           </button>
         </div>
       </div>
+      <button class="primary" @click="selectNames">Find Names</button>
     </div>
+    {{ selectedNames }}
   </div>
 </template>
 
@@ -119,4 +131,16 @@ h1 {
   background-color: rgb(249, 87, 89);
   color: white;
 }
+
+.primary {
+  background-color: rgb(249, 87, 89);
+  color: white;
+  border-radius: 6.5rem;
+  border: none;
+  padding: 0.75rem 4rem;
+  font-size: 1rem;
+  margin: 1rem auto;
+  cursor: pointer;
+}
+
 </style>
