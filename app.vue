@@ -7,11 +7,13 @@ const selectedNames = ref();
 const generator = reactive({gender: '', popularity: '', length: 'All'});
 
 const selectOption = (evt, optionType) => {
-  generator[optionType] = evt.target.innerText;
-  const parent = evt.target.parentNode;
-  const options = parent.querySelectorAll('.option');
-  Array.from(options, option => option.classList.remove('option-active'));
-  evt.target.classList.add('option-active');
+  if (evt.target.nodeName === 'BUTTON') {
+    generator[optionType] = evt.target.innerText;
+    const parent = evt.target.parentNode;
+    const options = parent.querySelectorAll('.option');
+    Array.from(options, option => option.classList.remove('option-active'));
+    evt.target.classList.add('option-active');
+  }
 };
 
 const selectNames = () => selectedNames.value = names
@@ -48,7 +50,7 @@ const selectNames = () => selectedNames.value = names
       </div>
       <div class="option-container">
         <h4>2) Choose the name's popularity</h4>
-        <div class="option-buttons" @click="selectOption($event, 'popularity')" >
+        <div class="option-buttons" @click="selectOption($event, 'popularity')">
           <button
               class="option option-left"
           >
@@ -95,9 +97,11 @@ const selectNames = () => selectedNames.value = names
   margin: 0 auto;
   text-align: center;
 }
+
 h1 {
   font-size: 3rem;
 }
+
 .options-container {
   background-color: rgb(255, 238, 236);
   border-radius: 2rem;
@@ -107,9 +111,11 @@ h1 {
   margin-top: 4rem;
   position: relative;
 }
+
 .option-container {
   margin-bottom: 2rem;
 }
+
 .option {
   background: white;
   outline: 0.15rem solid rgb(249, 87, 89);
@@ -121,12 +127,15 @@ h1 {
   cursor: pointer;
   font-weight: 200;
 }
+
 .option-left {
   border-radius: 1rem 0 0 1rem;
 }
+
 .option-right {
   border-radius: 0 1rem 1rem 0;
 }
+
 .option-active {
   background-color: rgb(249, 87, 89);
   color: white;
