@@ -1,12 +1,13 @@
 <template>
   <div class="card">
     <h4>{{ name }}</h4>
-    <p>x</p>
+    <p @click="$emit('remove')">x</p>
   </div>
 </template>
 
 <script setup>
 defineProps(['name']);
+defineEmits(['remove']);
 
 </script>
 

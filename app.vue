@@ -10,7 +10,11 @@
       <button class="primary" @click="selectNames">Find Names</button>
     </div>
     <div class="cards-container">
-      <Card v-for="name in selectedNames" :key="name" :name="name"/>
+      <CardName v-for="name in selectedNames"
+                :key="name"
+                :name="name"
+                @remove="removeName(name)"
+      />
     </div>
   </div>
 </template>
@@ -45,6 +49,10 @@ const selectNames = () => selectedNames.value = names
     .filter(item => item.popularity === generator.value.popularity)
     .filter(item => generator.value.length === 'All' ? item : item.length === generator.value.length)
     .map(item => item.name);
+
+const removeName = nameToRemove => {
+  selectedNames.value = selectedNames.value.filter(selectedName => selectedName !== nameToRemove);
+};
 </script>
 
 <style scoped>
@@ -80,6 +88,7 @@ h1 {
   margin: 1rem auto;
   cursor: pointer;
 }
+
 .cards-container {
   display: flex;
   margin: 3rem auto;
