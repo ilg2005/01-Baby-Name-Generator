@@ -1,24 +1,32 @@
 <script setup>
 import {names} from './names.js';
+import {useState} from "nuxt/app";
 
 const selectedNames = ref();
+const generator = useState('generatorState');
 
-const generator = reactive({gender: 'Unisex', popularity: 'Trendy', length: 'All'});
-
-const selectOption = (evt, optionType) => {
-  if (evt.target.nodeName === 'BUTTON') {
-    generator[optionType] = evt.target.innerText;
-    const parent = evt.target.parentNode;
-    const options = parent.querySelectorAll('.option');
-    Array.from(options, option => option.classList.remove('option-active'));
-    evt.target.classList.add('option-active');
-  }
-};
+const optionsArray = [
+  {
+    title: '1) Choose a gender',
+    type: 'gender',
+    btns: ['Boy', 'Unisex', 'Girl']
+  },
+  {
+    title: "2) Choose the name's popularity",
+    type: 'popularity',
+    btns: ['Trendy', 'Unique']
+  },
+  {
+    title: "3) Choose name's length",
+    type: 'length',
+    btns: ['Long', 'All', 'Short']
+  },
+];
 
 const selectNames = () => selectedNames.value = names
-    .filter(item => item.gender === generator.gender)
-    .filter(item => item.popularity === generator.popularity)
-    .filter(item => generator.length === 'All' ? item : item.length === generator.length)
+    .filter(item => item.gender === generator.value.gender)
+    .filter(item => item.popularity === generator.value.popularity)
+    .filter(item => generator.value.length === 'All' ? item : item.length === generator.value.length)
     .map(item => item.name);
 </script>
 
@@ -27,61 +35,10 @@ const selectNames = () => selectedNames.value = names
     <h1>Baby Name Generator</h1>
     <p>Choose your options and click the "Find Names" button below</p>
     <div class="options-container">
-      <div class="option-container">
-        <h4>1) Choose a gender</h4>
-        <div class="option-buttons" @click="selectOption($event, 'gender')">
-          <button
-              class="option option-left"
-          >
-            Boy
-          </button>
-          <button
-              class="option option-active"
-          >
-            Unisex
-          </button>
-          <button
-              class="option option-right"
-          >
-            Girl
-          </button>
-        </div>
-      </div>
-      <div class="option-container">
-        <h4>2) Choose the name's popularity</h4>
-        <div class="option-buttons" @click="selectOption($event, 'popularity')">
-          <button
-              class="option option-left option-active"
-          >
-            Trendy
-          </button>
-          <button
-              class="option option-right"
-          >
-            Unique
-          </button>
-        </div>
-      </div>
-      <div class="option-container">
-        <h4>3) Choose name's length</h4>
-        <div class="option-buttons" @click="selectOption($event, 'length')">
-          <button
-              class="option option-left"
-          >
-            Long
-          </button>
-          <button
-              class="option option-active"
-          >
-            All
-          </button>
-          <button
-              class="option option-right"
-          >
-            Short
-          </button>
-        </div>
-      </div>
+      <Option v-for="optionItem in optionsArray"
+              :key="optionItem.title"
+              :option="optionItem"
+      />
       <button class="primary" @click="selectNames">Find Names</button>
     </div>
     <div class="cards-container">
@@ -114,35 +71,6 @@ h1 {
   margin: 0 auto;
   margin-top: 4rem;
   position: relative;
-}
-
-.option-container {
-  margin-bottom: 2rem;
-}
-
-.option {
-  background: white;
-  outline: 0.15rem solid rgb(249, 87, 89);
-  border: none;
-  padding: 0.75rem;
-  width: 12rem;
-  font-size: 1rem;
-  color: rgb(27, 60, 138);
-  cursor: pointer;
-  font-weight: 200;
-}
-
-.option-left {
-  border-radius: 1rem 0 0 1rem;
-}
-
-.option-right {
-  border-radius: 0 1rem 1rem 0;
-}
-
-.option-active {
-  background-color: rgb(249, 87, 89);
-  color: white;
 }
 
 .primary {
