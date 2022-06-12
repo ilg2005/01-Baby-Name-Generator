@@ -1,3 +1,20 @@
+<template>
+  <div class="container">
+    <h1>Baby Name Generator</h1>
+    <p>Choose your options and click the "Find Names" button below</p>
+    <div class="options-container">
+      <Option v-for="optionItem in optionsArray"
+              :key="optionItem.title"
+              :option="optionItem"
+      />
+      <button class="primary" @click="selectNames">Find Names</button>
+    </div>
+    <div class="cards-container">
+      <Card v-for="name in selectedNames" :key="name" :name="name"/>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import {names} from './names.js';
 import {useState} from "nuxt/app";
@@ -29,26 +46,6 @@ const selectNames = () => selectedNames.value = names
     .filter(item => generator.value.length === 'All' ? item : item.length === generator.value.length)
     .map(item => item.name);
 </script>
-
-<template>
-  <div class="container">
-    <h1>Baby Name Generator</h1>
-    <p>Choose your options and click the "Find Names" button below</p>
-    <div class="options-container">
-      <Option v-for="optionItem in optionsArray"
-              :key="optionItem.title"
-              :option="optionItem"
-      />
-      <button class="primary" @click="selectNames">Find Names</button>
-    </div>
-    <div class="cards-container">
-      <div v-for="name in selectedNames" :key="name" class="card">
-        <h4>{{ name }}</h4>
-        <p>x</p>
-      </div>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .container {
@@ -87,22 +84,5 @@ h1 {
   display: flex;
   margin: 3rem auto;
   flex-wrap: wrap;
-}
-.card {
-  background-color: rgb(27, 60, 138);
-  width: 28%;
-  color: white;
-  border-radius: 1rem;
-  padding: 0.1rem;
-  margin-right: 0.5rem;
-  margin-bottom: 1rem;
-  position: relative;
-}
-.card p {
-  position: absolute;
-  top: -20%;
-  left: 92.5%;
-  cursor: pointer;
-  color: white;
 }
 </style>
